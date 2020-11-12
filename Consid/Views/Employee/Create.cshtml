@@ -1,0 +1,48 @@
+@model Consid.ViewModels.EmployeeViewModel
+
+@{ Layout = null; }
+
+<div class="row">
+    <div class="col-md-12">
+        <form id="form1" asp-action="Create" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this)">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsCEO" onchange="refreshFormAjax('@Url.Action("Refresh", "Employee", null, Context.Request.Scheme)','Add Employee')" /> @Html.DisplayNameFor(model => model.IsCEO)
+                </label>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsManager" onchange="refreshFormAjax('@Url.Action("Refresh","Employee",null, Context.Request.Scheme)','Add Employee')" /> @Html.DisplayNameFor(model => model.IsManager)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName" class="control-label"></label>
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rank" class="control-label"></label>
+                <input asp-for="Rank" class="form-control" />
+                <span asp-validation-for="Rank" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.ManagerId, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(x => x.ManagerId, new SelectList(Model.Managers, "Value", "Text"), "--- Select Manager ---", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.ManagerId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

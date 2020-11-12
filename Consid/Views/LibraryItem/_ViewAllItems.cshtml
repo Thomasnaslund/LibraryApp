@@ -1,0 +1,120 @@
+﻿
+@model IEnumerable<Consid.ViewModels.LibraryItemViewModel>
+
+@{ ViewData["Title"] = "Index"; }
+
+
+
+
+
+<div class="row">
+    <div class="col-lg-12 mx-auto">
+        @using (Html.BeginForm("ExportCSV", "LibraryItem", FormMethod.Post))
+        {
+    <input type="submit" id="btnSubmit" value="Export" />}
+        <div class="card border-0 shadow">
+            <div class="card-body p-2">
+                <table class="table table-hover">
+                    <thead class="thead-light text-nowrap">
+                        <tr>
+                            <th style="width: 15.00%">
+                                <a asp-action="Index" asp-route-sortOrder="category">@Html.DisplayNameFor(model => model.CategoryName)</a>
+                            </th>
+                            <th style="width: 20.00%">
+                                @Html.DisplayNameFor(model => model.Title)
+                            </th>
+                            <th style="width: 15.00%">
+                                @Html.DisplayNameFor(model => model.Author)
+                            </th>
+                            <th style="width: 5.00%">
+                                @Html.DisplayNameFor(model => model.Pages)
+                            </th>
+                            <th style="width: 5.00%">
+                                @Html.DisplayNameFor(model => model.RuntimeMinutes)
+                            </th>
+                            <th style="width: 10.00%">
+                                @Html.DisplayNameFor(model => model.Borrower)
+                            </th>
+                            <th style="width: 5.00%">
+                                @Html.DisplayNameFor(model => model.BorrowDate)
+                            </th>
+                            <th style="width: 5.00%">
+                                <a asp-action="Index" asp-route-sortOrder="type">@Html.DisplayNameFor(model => model.Type)</a>
+                            </th>
+                            <th style="width: 20.00%">
+                                <a onclick="showInPopup('@Url.Action("Create","LibraryItem",null,Context.Request.Scheme)','New Item')" class="btn btn-primary text-white float-right"> New Item</a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    <ul class="list-inline m-0">
+                        <li class="list-inline m-0">
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </li>
+                        <li class="list-inline m-0">
+                            @Html.DisplayFor(modelItem => item.Acronym)
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Pages)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RuntimeMinutes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Borrower)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BorrowDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    <ul class="list-inline m-0 float-right">
+                        @if (item.IsBorrowable && !item.IsCheckedOut)
+                        {
+        <li class="list-inline-item">
+            <button class="btn btn-success btn-sm rounded" onclick="showInPopup('@Url.Action("CheckOut", "LibraryItem", new {id=@item.Id}, Context.Request.Scheme)','Check out')" type="button" data-toggle="tooltip" data-placement="top" title="Check out"><i class="fa fa-eye"></i></button>
+        </li>
+ }
+    else if (item.IsCheckedOut)
+    {
+    <li class="list-inline-item">
+        <form asp-action="CheckInOut" asp-route-id="@item.Id" onsubmit="return jQueryAjaxPost(this)" class="d-inline">
+            <input type="hidden" asp-for="@item.Id" />
+            <button class="btn btn-success btn-sm rounded" type="submit" data-toggle="tooltip" data-placement="top" title="Check in"><i class="fa fa-eye-slash"></i></button>
+        </form>
+    </li>
+}
+                        <li class="list-inline-item">
+                            <button class="btn btn-success btn-sm rounded" onclick="showInPopup('@Url.Action("Edit","LibraryItem",new {id=@item.Id},Context.Request.Scheme)','Edit')" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                        </li>
+                        <li class="list-inline-item">
+                            <form asp-action="Delete" asp-route-id="@item.Id" onsubmit="return jQueryAjaxDelete(this)" class="d-inline">
+                                <input type="hidden" asp-for="@item.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm rounded" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                            </form>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

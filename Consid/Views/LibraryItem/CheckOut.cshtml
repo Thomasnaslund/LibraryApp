@@ -1,0 +1,28 @@
+﻿@model Consid.ViewModels.LibraryItemViewModel
+
+
+
+@{ Layout = null; }
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="CheckInOut" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Borrower" class="control-label"></label>
+                    <input asp-for="Borrower" class="textboxclass form-control " />
+                    <span asp-validation-for="Borrower" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6 offset-md-3">
+                        <input type="submit" value="Check out" class="btn btn-primary btn-block" />
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

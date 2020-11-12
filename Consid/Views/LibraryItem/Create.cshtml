@@ -1,0 +1,63 @@
+@model Consid.ViewModels.LibraryItemViewModel
+
+@{ ViewData["Title"] = "Create"; }
+
+@{ Layout = null; }
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="IsCheckedOut" />
+            <div class="form-group">
+                @Html.DropDownListFor(x => x.Type, new SelectList(Model.Types, "Value", "Text"), "--- Select Type ---", htmlAttributes: new
+                {
+                    @onchange = "typeInputSwitch(this.value)",
+                    @class = "form-control",
+                })
+
+            </div>
+            <div class="form-group" id="category" style="display:none">
+                @Html.LabelFor(x => x.CategoryName, htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(x => x.CategoryId, new SelectList(Model.Categories, "Value", "Text"), "--- Select Category ---", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.CategoryId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group" id="title" style="display:none">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="author" style="display:none">
+                <label asp-for="Author" class="control-label"></label>
+                <input asp-for="Author" class="textboxclass form-control " />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="pages" style="display:none">
+                <label asp-for="Pages" class="control-label"></label>
+                <input asp-for="Pages" class="form-control" />
+                <span asp-validation-for="Pages" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="rtm" style="display:none">
+                <label asp-for="RuntimeMinutes" class="control-label"></label>
+                <input asp-for="RuntimeMinutes" class="form-control" />
+                <span asp-validation-for="RuntimeMinutes" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check borrow-form" id="isbarrowable" style="display:none">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsBorrowable" /> @Html.DisplayNameFor(model => model.IsBorrowable)
+                </label>
+            </div>
+            <div class="form-group" id="submit" style="display:none">
+                <div class="col-md-6 offset-md-3">
+                    <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

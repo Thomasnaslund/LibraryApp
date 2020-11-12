@@ -1,0 +1,52 @@
+﻿
+@model IEnumerable<Consid.ViewModels.CategoryViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+    <div class="row">
+        <div class="col-lg-4 mx-auto">
+            <div class="card border-0 shadow">
+                <div class="card-body p-2">
+                    <table class="table table-hover">
+                        <thead class="thead-light text-nowrap">
+                            <tr>
+                                <th scope="col">
+                                    @Html.DisplayNameFor(model => model.CategoryName)
+                                </th>
+                                <th scope="col">
+                                    <a onclick="showInPopup('@Url.Action("Create","Category",null,Context.Request.Scheme)','New Category')" class="btn btn-primary text-white float-right"> Add Category</a>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CategoryName)
+                                    </td>
+                                    <td>
+                                        <ul class="list-inline m-0 float-right">
+                                            <li class="list-inline-item">
+                                                <button class="btn btn-success btn-sm rounded" onclick="showInPopup('@Url.Action("Edit","Category",new {id=@item.Id},Context.Request.Scheme)','Edit')" type="button" data-toggle="tooltip" data-placement="top" title="Add"><i class="fa fa-edit"></i></button>
+                                            </li>
+                                            <li class="list-inline-item pl-2">
+                                                <form asp-action="Delete" asp-route-id="@item.Id" onsubmit="return jQueryAjaxDelete(this)" class="d-inline">
+                                                    <input type="hidden" asp-for="@item.Id" />
+                                                    <button type="submit" class="btn btn-danger btn-sm rounded" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
